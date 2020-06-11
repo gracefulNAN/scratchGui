@@ -4,6 +4,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {projectTitleInitialState} from '../reducers/project-title';
 import downloadBlob from '../lib/download-blob';
+import {setHtmlFile} from '../reducers/htmllifiers.js';
+
 /**
  * Project saver component passes a downloadProject function to its child.
  * It expects this child to be a function with the signature
@@ -30,7 +32,13 @@ class SB3Downloader extends React.Component {
             if (this.props.onSaveFinished) {
                 this.props.onSaveFinished();
             }
-            downloadBlob(this.props.projectFilename, content);
+            const time = new Date()
+            content.lastModified = time*1;
+            content.lastModifiedDate = time;
+            content.webkitRelativePath = '';
+            content.name = this.props.projectFilename;
+            this.props.setFileState(content)
+            // downloadBlob(this.props.projectFilename, content);
         });
     }
     render () {
@@ -57,18 +65,27 @@ SB3Downloader.propTypes = {
     className: PropTypes.string,
     onSaveFinished: PropTypes.func,
     projectFilename: PropTypes.string,
-    saveProjectSb3: PropTypes.func
+    saveProjectSb3: PropTypes.func,
+    setFileState: PropTypes.func,
+    fileState: PropTypes.object,
+    
 };
 SB3Downloader.defaultProps = {
     className: ''
 };
 
-const mapStateToProps = state => ({
-    saveProjectSb3: state.scratchGui.vm.saveProjectSb3.bind(state.scratchGui.vm),
-    projectFilename: getProjectFilename(state.scratchGui.projectTitle, projectTitleInitialState)
+const mapStateToProps = state =>{
+    return ({
+        fileState: state.scratchGui.fileState.htmlfile,
+        saveProjectSb3: state.scratchGui.vm.saveProjectSb3.bind(state.scratchGui.vm),
+        projectFilename: getProjectFilename(state.scratchGui.projectTitle, projectTitleInitialState)
+    })
+} ;
+const mapDispatchToProps = dispatch => ({
+    setFileState: (file) => dispatch(setHtmlFile(file)),
 });
 
 export default connect(
     mapStateToProps,
-    () => ({}) // omit dispatch prop
+    mapDispatchToProps
 )(SB3Downloader);

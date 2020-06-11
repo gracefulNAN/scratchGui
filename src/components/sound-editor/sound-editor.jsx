@@ -143,7 +143,7 @@ const SoundEditor = props => (
         ref={props.setRef}
         onMouseDown={props.onContainerClick}
     >
-        <div className={styles.row}>
+        {/* <div className={styles.row}>
             <div className={styles.inputGroup}>
                 <Label text={props.intl.formatMessage(messages.sound)}>
                     <BufferedInput
@@ -307,7 +307,7 @@ const SoundEditor = props => (
                 title={<FormattedMessage {...messages.robot} />}
                 onClick={props.onRobot}
             />
-        </div>
+        </div> */}
     </div>
 );
 

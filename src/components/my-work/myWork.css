@@ -1,0 +1,250 @@
+@import "../../css/units.css";
+@import "../../css/colors.css";
+
+.work-feach-class{
+  padding: 12px 25px;
+  background-color: $motion-transparent;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.work-warpper{
+  height: calc(100% - 3.125rem);
+  /* height: 580px; */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.classify{
+  /* flex: 1 1 auto; */
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow: hidden;
+  width: 80%;
+}
+.classify:hover{
+  overflow-x: auto;
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: calc($library-filter-bar-height + 2rem); /* padding */
+  background-color: $motion-transparent;
+  padding: 0 1rem;
+  font-size: .875rem;
+}
+
+.filter-bar-item {
+  margin-right: 1rem;
+}
+
+.filter {
+  flex-grow: 0;
+}
+
+.filter-input {
+  width: 11.5rem;
+  transition: .2s;
+}
+
+.filter-input:focus,
+.filter-input:not([value=""]) {
+  width: 18.75rem;
+}
+
+.divider {
+  transform: scaleY(1.39);
+  height: $library-filter-bar-height;
+}
+
+.class-button{
+  padding: .625rem 1rem;
+  background: $motion-primary;
+  border-radius: 1.375rem;
+  color: $ui-white;
+  height: $library-filter-bar-height;
+  border: none;
+  outline: none;
+  margin-right: .75rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.def-class-button{
+  background: $data-primary;
+}
+.logue-add{
+  border: 1px dashed $motion-transparent;
+  color: $motion-transparent;
+  background: $ui-tertiary;
+}
+/* .class-add-button{
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  display: block;
+  font-size: 24px;
+  padding: 2px 9px;
+  color: $motion-transparent;
+  background: $ui-tertiary;
+  border: 1px dashed $motion-transparent;
+  position: absolute;
+  right: 1.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+} */
+.work-area{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: $ui-secondary;
+  height: calc(100% - 2*$menu-bar-button-size);
+}
+.catalogue{
+  width: 11rem;
+  height: 100%;
+  border-right: 1px solid rgb(135, 193, 248);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 15px;
+  cursor: pointer;
+}
+.catalogue>.logueHead{
+  display: flex;
+  height: $library-filter-bar-height;
+  /* background-color: blue; */
+  align-items: center;
+  justify-content: flex-end;
+  /* border-right: 1px solid blue; */
+  border-bottom: 1px solid rgb(219, 234, 248);
+  padding-right: 1.2rem;
+}
+.catalogue>.logueHead>p{
+  margin: 0px;
+  padding: 0px;
+  border-radius: 100%;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid rgb(144, 144, 255);
+  line-height: 1rem;
+  text-align: center;
+  margin: 0px .6rem;
+}
+.logueHead:hover,
+.logue-contair>.logue-warper>p:hover{
+  background-color: $logue-nav-hover;
+}
+.catalogue>.logue-contair{
+  height: calc( 100% - $library-filter-bar-height );
+  flex: 1 1 auto;
+  overflow: hidden;
+  z-index: 9;
+}
+.logue-contair>.logue-warper>p{
+  margin: 0px;
+  padding: 0px;
+  height: $library-filter-bar-height;
+  text-align: right;
+  line-height: $library-filter-bar-height;
+  padding-right: 20px;
+  width: 100%;
+}
+.logue-button{
+  background-color: $logue-nav;
+}
+.logue-contair:hover{
+  overflow-y: auto;
+}
+.logue-contair-two:hover{
+  width: calc(100% + 17px );
+}
+.contairs{
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.contairs>.catalogue-path{
+  height: $library-filter-bar-height;
+  width: 100%;
+  text-indent: 2em;
+  line-height: $library-filter-bar-height;
+  font-size: 14px;
+  border-bottom: 1px solid rgb(219, 234, 248);
+  /* display: flex; */
+}
+.catalogue-path>b{
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 0px .3rem;
+  
+}
+.contairs>.content-includes{
+  flex: 1 1 auto;
+  width: 100%;
+  height: calc( 100% - $library-filter-bar-height );
+  background-color: rgb(135, 193, 248);
+  padding: 6px;
+}
+.content-includes>.content-center{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: $ui-secondary;
+  padding: 0.7rem;
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  flex-grow: 1;
+  flex-wrap: wrap;
+}
+.spinner-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mouse-styles{
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid hsla(215, 100%, 65%, 1);
+  border-radius: .5rem;
+  background-color: rgb(227, 236, 248);
+  box-shadow: 0px 0px 2px 1px hsla(215, 100%, 65%, 1);
+  overflow: hidden;
+  font-size: 12px;
+}
+.mouse-styles>.mouse-items{
+  width: 100%;
+  padding: 8px 30px;
+  border-bottom: 1px solid rgb(212, 249, 252);
+}
+.mouse-styles>.mouse-items:last-child{
+  border: none;
+}
+.mouse-styles>.mouse-items:hover{
+  background-color: rgb(208, 226, 250);
+}
+
+.popupBank{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}

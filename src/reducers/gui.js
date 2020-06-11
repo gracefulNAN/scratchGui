@@ -27,6 +27,8 @@ import vmReducer, {vmInitialState} from './vm';
 import vmStatusReducer, {vmStatusInitialState} from './vm-status';
 import throttle from 'redux-throttle';
 import userStateReducer, {userStateInitialState} from './user-state.js';
+import myWorkReducer,{workInitialState} from './workData/my-work.js';
+import htmlFileReducer, {fileInitialState} from './htmllifiers.js'
 import decks from '../lib/libraries/decks/index.jsx';
 
 const guiMiddleware = compose(applyMiddleware(throttle(300, {leading: true, trailing: true})));
@@ -59,6 +61,8 @@ const guiInitialState = {
     vm: vmInitialState,
     vmStatus: vmStatusInitialState,
     userState: userStateInitialState,
+    myWorkState: workInitialState,
+    fileState: fileInitialState,
 
 };
 
@@ -159,6 +163,8 @@ const guiReducer = combineReducers({
     vm: vmReducer,
     vmStatus: vmStatusReducer,
     userState: userStateReducer,
+    myWorkState: myWorkReducer,
+    fileState: htmlFileReducer,
 
 });
 

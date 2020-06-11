@@ -41,6 +41,7 @@ import codeIcon from './icon--code.svg';
 import costumesIcon from './icon--costumes.svg';
 import soundsIcon from './icon--sounds.svg';
 import LoginModal from '../login/login.jsx';
+import MyWorkModal from '../my-work/myWork.jsx'
 
 const messages = defineMessages({
     addExtension: {
@@ -114,6 +115,7 @@ const GUIComponent = props => {
         onTelemetryModalOptOut,
         showComingSoon,
         showLoginModal,
+        showMyWorkModal,
         showPersonalModal,
         soundsTabVisible,
         stageSizeMode,
@@ -165,9 +167,17 @@ const GUIComponent = props => {
                 dir={isRtl ? 'rtl' : 'ltr'}
                 {...componentProps}
             >
+                {/* 登录 */}
                 { showLoginModal ? (
                     <LoginModal title="东实科技"/>
                 ): null }
+                {/* 我的作品 */}
+                {/* {showMyWorkModal ? (
+                    <MyWorkModal />
+                ) : null} */}
+                {showMyWorkModal ? (
+                    <MyWorkModal />
+                ) : null}
                 {telemetryModalVisible ? (
                     <TelemetryModal
                         onCancel={onTelemetryModalCancel}
@@ -186,6 +196,7 @@ const GUIComponent = props => {
                 {isRendererSupported ? null : (
                     <WebGlModal isRtl={isRtl} />
                 )}
+                {/* 教程 */}
                 {tipsLibraryVisible ? (
                     <TipsLibrary />
                 ) : null}
@@ -212,6 +223,7 @@ const GUIComponent = props => {
                         onRequestClose={onRequestCloseBackdropLibrary}
                     />
                 ) : null}
+                
                 <MenuBar
                     accountNavOpen={accountNavOpen}
                     authorId={authorId}
@@ -426,6 +438,7 @@ GUIComponent.propTypes = {
     showComingSoon: PropTypes.bool,
     showLoginModal: PropTypes.bool,  // loginModal
     showPersonalModal: PropTypes.bool,  // loginModal
+    showMyWorkModal: PropTypes.bool,  // myWork
     soundsTabVisible: PropTypes.bool,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
     targetIsStage: PropTypes.bool,
@@ -434,7 +447,6 @@ GUIComponent.propTypes = {
     vm: PropTypes.instanceOf(VM).isRequired,
     loginState: PropTypes.bool,  // login
     onLogin:PropTypes.func,
-    
 };
 
 GUIComponent.defaultProps = {
@@ -456,6 +468,7 @@ GUIComponent.defaultProps = {
     loading: false,
     showComingSoon: false,
     showLoginModal: false,
+    showMyWorkModal: false,
     showPersonalModal: false,
     stageSizeMode: STAGE_SIZE_MODES.large,
 

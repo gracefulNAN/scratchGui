@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HTMLifier</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Converts a Scratch project to HTML/JavaScript"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="./offlineifier.js" charset="utf-8"></script>
+    <script src="./hacky-file-getter.js" charset="utf-8"></script>
+    <style media="screen">
+      html {
+        scroll-padding-top: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainarea">
+      <label>
+        <input type="radio" name="upload-mode" value="file"> 
+        上传文件 <input type="file" id="file" accept=".sb,.sb2,.sb3">
+      </label>
+    </div>
+    <div id="Abiao">
+      打开HTML
+    </div>
+    <!-- VM relies on document.body existing oof -->
+    <!-- <script src="https://sheeptester.github.io/scratch-vm/16-9/vm.min.js" charset="utf-8"></script> -->
+    <script type="text/javascript">
+      const file = document.getElementById('file');
+      const Abiao = document.getElementById('Abiao');
+
+      function getProject() {
+        if (document.querySelector('input[name="upload-mode"]:checked').value === 'file') {
+          if (!file.files || !file.files[0]) return Promise.reject(new Error('No file selected'));
+          return { file: file.files[0] };
+        } else {
+          return {id: id.value};
+        }
+      }
+
+      file.addEventListener('change', e => {
+        if (file.files[0]) {
+          document.querySelector('input[name="upload-mode"][value="file"]').checked = true;
+        }
+      });
+
+      Abiao.addEventListener("click",()=>{
+        downloadAsHTML(getProject(), {
+          title: "生日派对",
+          username: "wang",
+        })
+        .then(html => {
+          SB3ToHtml( Abiao , html , "text/html")
+        })
+        .catch(err => {
+          console.error(err);
+          if (err.message !== 'error logged') {
+            alert('Unexpected error:\n' + err.stack, 'error');
+          }
+        });
+      })
+
+      // a 标签
+      function SB3ToHtml(element, html, type) {
+        var self = window,
+        toString = function(a){return String(a);},
+        myBlob = (self.Blob || self.MozBlob || self.WebKitBlob || toString);
+        myBlob= myBlob.call ? myBlob.bind(self) : Blob ;
+        blob = html instanceof myBlob ? html :  new myBlob([html], {type: type}) ;
+
+        anchor = document.createElement("a")
+        anchor.href = self.URL.createObjectURL(blob);
+        anchor.type = type;
+        anchor.target = "view_window";
+        anchor.click();
+        element.appendChild(anchor);
+        element.removeChild(anchor);
+      }
+     
+/* /no-offline */
+    </script>
+  </body>
+</html>

@@ -9,7 +9,8 @@ import styles from './community-button.css';
 
 const CommunityButton = ({
     className,
-    onClick
+    onClick,
+    buttonText,
 }) => (
     <Button
         className={classNames(
@@ -20,16 +21,18 @@ const CommunityButton = ({
         iconSrc={communityIcon}
         onClick={onClick}
     >
-        <FormattedMessage
+        {/* <FormattedMessage
             defaultMessage="See Project Page"
             description="Label for see project page button"
             id="gui.menuBar.seeProjectPage"
-        />
+        /> */}
+        {buttonText}
     </Button>
 );
 
 CommunityButton.propTypes = {
     className: PropTypes.string,
+    buttonText: PropTypes.string,
     onClick: PropTypes.func
 };
 

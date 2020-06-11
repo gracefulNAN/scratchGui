@@ -14,6 +14,7 @@ const MODAL_CONNECTION = 'connectionModal';
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 const MODAL_LOGIN = "loginModal"; // login
 const MODAL_PERSONALDETAILS  = "personalDetails"; // 个人信息
+const MODAL_MYWORK  = "myWorkModal"; // 我的作品
 
 const initialState = {
     [MODAL_BACKDROP_LIBRARY]: false,
@@ -29,6 +30,7 @@ const initialState = {
     [MODAL_TIPS_LIBRARY]: false,
     [MODAL_LOGIN]: false,
     [MODAL_PERSONALDETAILS]: false,
+    [MODAL_MYWORK]: false,
 };
 
 const reducer = function (state, action) {
@@ -138,6 +140,13 @@ const openPersonalModal = function () {
 const closePersonalModal = function () {
     return closeModal(MODAL_PERSONALDETAILS);
 }
+// open/close my-work
+const openMyWorkModal = function () {
+    return openModal(MODAL_MYWORK);
+}
+const closeMyWorkModal = function () {
+    return closeModal(MODAL_MYWORK);
+}
 
 export {
     reducer as default,
@@ -155,6 +164,7 @@ export {
     openConnectionModal,
     openLoginModal,
     openPersonalModal,
+    openMyWorkModal,
     closeBackdropLibrary,
     closeCameraCapture,
     closeCostumeLibrary,
@@ -168,4 +178,5 @@ export {
     closeConnectionModal,
     closeLoginModal,
     closePersonalModal,
+    closeMyWorkModal,
 };
