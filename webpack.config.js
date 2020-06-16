@@ -163,6 +163,15 @@ module.exports = [
                 filename: 'player.html',
                 title: 'Scratch 3.0 GUI: Player Example'
             }),
+            // new HtmlWebpackPlugin({
+            //     chunks: ['lib.min'],
+            //     template: 'src/playground/index.ejs',
+            //     filename: 'template.html',
+            //     minify:{
+            //         removeComments:true, 
+            //         collapseWhitespace:true,
+            //     }
+            // }),
             new CopyWebpackPlugin([{
                 from: 'static',
                 to: 'static'

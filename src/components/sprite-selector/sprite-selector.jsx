@@ -17,6 +17,7 @@ import spriteIcon from '../action-menu/icon--sprite.svg';
 import surpriseIcon from '../action-menu/icon--surprise.svg';
 import searchIcon from '../action-menu/icon--search.svg';
 
+
 const messages = defineMessages({
     addSpriteFromLibrary: {
         id: 'gui.spriteSelector.addSpriteFromLibrary',

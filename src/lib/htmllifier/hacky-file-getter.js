@@ -190,6 +190,8 @@ function downloadAsHTML(projectSrc, {
     // fetch template 链接需要修改
     fetch(
       /* no-offline */ 'https://sheeptester.github.io/htmlifier/template.html' /* /no-offline */
+      // /* no-offline */ 'http://127.0.0.1:5501/template.html' /* /no-offline */
+      // /* no-offline */ './template.html' /* /no-offline */
       // [template]
     )
     .catch(problemFetching('the HTML template'))

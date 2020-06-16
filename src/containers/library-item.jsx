@@ -133,6 +133,9 @@ class LibraryItem extends React.PureComponent {
                 onMouseLeave={this.handleMouseLeave}
                 onPlay={this.handlePlay}
                 onStop={this.handleStop}
+                mouseVisibleFunc={this.props.mouseVisibleFunc}
+                mouseCarListFunc={this.props.mouseCarListFunc}
+                mouseContextmenuFunc={this.props.mouseContextmenuFunc}
             />
         );
     }
@@ -168,6 +171,9 @@ LibraryItem.propTypes = {
     onMouseEnter: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
+    mouseVisibleFunc: PropTypes.func,
+    mouseCarListFunc: PropTypes.func,
+    mouseContextmenuFunc: PropTypes.func,
     showPlayButton: PropTypes.bool
 };
 

@@ -11,7 +11,9 @@ import Divider from '../divider/divider.jsx';
 import Filter from '../filter/filter.jsx';
 import TagButton from '../../containers/tag-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
+import MouseCarHoc from '../mouse-car/mouseCar.jsx'
 import styles from "./myWork.css";
+
 import { 
     closeMyWorkModal, 
 } from '../../reducers/modals.js';
@@ -19,7 +21,6 @@ import {
   // requestWorkAct,
   setWorkLogueAct,
 } from '../../reducers/workData/my-work.js';
-import PopupBank from './popupBank/popupBank.jsx'
 import Car from './my-car/my-car.jsx'
 
 class MyWork extends Component{
@@ -28,19 +29,13 @@ class MyWork extends Component{
     this.state = {
       classifyStyle: 0,
       logueStyle: 0,
-      mouseCarVisible: false,
-      mouseCarText:[],
       twoLogue:[],
       logueWidth: false,
       myWork:[],
-      isShowCurtain: false,
-      types: "",
-      xuanData:{},
-      xuanTitle:'',
     };
   }
   componentDidMount(){
-    this.newMouseRight = this.mouseRightClick();
+    this.newMouseRight = this.mouseContextmenu();
     this.setState({
       twoLogue: this.props.initialLogue[0].logue,
       myWork: this.props.myWorkState,
@@ -93,132 +88,32 @@ class MyWork extends Component{
     }
   }
 
-  setMouseDown( value ){
+  setMouseDown(){
     document.addEventListener("contextmenu",this.newMouseRight)
-    this.setState({
-      mouseCarText: value,
-    })
+  }
+  mouseContextmenu(){
+    return (even, ...ags)=>{
+      this.props.mouseVisibleFunc(true)
+      this.props.mouseCarListFunc(["分享","编辑"])
+      this.props.mouseContextmenuFunc(even)
+    }
   }
   setMouseLeave(){
-    document.removeEventListener("contextmenu",this.newMouseRight)
-    this.setState({
-      mouseCarVisible: false,
-    })
+    // mouse right
+    document.removeEventListener("contextmenu", this.newMouseRight)
+    this.props.mouseVisibleFunc(false)
   }
-  mouseRightClick() {
-    return ( even, ...ags )=>{
-      even.preventDefault();
-      even.stopPropagation();
-      this.setState({
-        mouseCarVisible: true,
-      })
-      let carTop ;
-      let carleft ;
-      // 获取设备宽高  鼠标坐标 : even.clientY even.clientX
-      let facilityWidth = document.body.offsetWidth ;
-      let facilityHeight = document.body.offsetHeight ;
-      // mouseCar 宽高
-      let mouseCarWidth = this.mouseRoof.offsetWidth;
-      let mouseCarHeight = this.mouseRoof.offsetHeight;
-      // 计算设备宽高-mousecar宽高结果；
-      let twoWidth = facilityWidth - 1.2*mouseCarWidth;
-      let twoHeight = facilityHeight - 1.2*mouseCarHeight;
-      // 判断鼠标坐标
-      if((even.clientY>twoHeight)&&(even.clientX>twoWidth)){
-        carTop = even.clientY - mouseCarHeight;
-        carleft = even.clientX - mouseCarWidth;
-      }else if((even.clientY>twoHeight)&&(even.clientX<twoWidth)){
-        carTop = even.clientY - mouseCarHeight;
-        carleft = even.clientX;
-      }else if((even.clientY<twoHeight)&&(even.clientX>twoWidth)){
-        carTop = even.clientY;
-        carleft = even.clientX - mouseCarWidth;
-      }else{
-        carTop = even.clientY;
-        carleft = even.clientX;
-      }
-      this.mouseRoof.style.top = `${carTop}px`;
-      this.mouseRoof.style.left = `${carleft}px`;
-    }
-  }
-  mouseCarEnterClick(){
-    this.setState({
-      mouseCarVisible: true,
-    })
-  }
-  mouseCarLeaveClick(){
-    this.setState({
-      mouseCarVisible: false,
-    })
-  }
-  mouseCarClickFunc(element, index){
-    this.setState({
-      isShowCurtain: true,
-      mouseCarVisible: false,
-    })
-    switch (element) {
-      case "移到":
-        this.setState({
-          isShowCurtain: true,
-          mouseCarVisible: false,
-          types: "yiDong",
-          xuanTitle: element,
-        })
-        break;
-      case "删除":
-        this.setState({
-          isShowCurtain: true,
-          mouseCarVisible: false,
-          types: "",
-          xuanTitle: element,
-        })
-        break;
-      case "分享":
-        this.setState({
-          isShowCurtain: true,
-          mouseCarVisible: false,
-          types: "fenXiang",
-          xuanTitle: element,
-        })
-        break;
-      default:
-        this.setState({
-          isShowCurtain: false,
-        })
-        break;
-    }
-  }
-
-  // 遮罩
-  setPopupFunc(){
-    let that = this;
-    return function (event, bool) {
-      event.stopPropagation();
-      event.preventDefault();
-      that.setState({
-        isShowCurtain: bool
-      })
-    }
-  }
-  
   render(){
     const { 
       classifyStyle, 
       logueStyle, 
-      mouseCarVisible, 
-      mouseCarText, 
       twoLogue, 
       logueWidth,
       myWork,
-      isShowCurtain,
-      types,
-      xuanTitle
+
     } = this.state;
-    const popupApplyFunc = this.setPopupFunc()
     const twoLogues = twoLogue.length ? twoLogue : [];
-    // const logueMouseCar = ["重命名","删除"];
-    // const workMouseCar = ["移到","分享","下载","重命名","删除",];
-    const workMouseCar = ["分享","编辑"];
+
     return (
       <Modal
         fullScreen
@@ -314,7 +209,7 @@ class MyWork extends Component{
                           <Car 
                             data={ workItems }
                             key={ workItems.id }
-                            onMouseDown={()=>{this.setMouseDown(workMouseCar)}}
+                            onMouseDown={()=>{this.setMouseDown()}}
                             onMouseLeave={()=>{this.setMouseLeave()}}
                           />
                         )
@@ -332,41 +227,6 @@ class MyWork extends Component{
             </div>
           </div>
         </div>
-        {
-          mouseCarVisible ? (
-            <div 
-              className={styles.mouseStyles}
-              ref={(ref)=>{ this.mouseRoof = ref }}
-              onMouseEnter={()=>{this.mouseCarEnterClick()}}
-              onMouseLeave={()=>{this.mouseCarLeaveClick()}}
-            >
-              {
-                mouseCarText.map((mouseItem, index)=>{
-                  return (
-                    <div 
-                      key={index}
-                      className={styles.mouseItems}
-                      onClick={(even)=>{this.mouseCarClickFunc(mouseItem,index)}}
-                    >{mouseItem}</div>
-                  )
-                })
-              }
-            </div>
-          ) : null
-        }
-        {
-          isShowCurtain ? (
-            <div 
-              className={styles.popupBank}
-              onClick={(even)=>{popupApplyFunc(even, false)}}
-            >
-              <PopupBank 
-                title={xuanTitle}
-                types={types}
-                onVisilibleClick={popupApplyFunc}
-              />
-            </div>) : null
-        }
       </Modal>
     )
   }
@@ -376,6 +236,9 @@ MyWork.propTypes = {
   onCloseMyWork: PropTypes.func,
   requestWork: PropTypes.func,
   setWorkLogue: PropTypes.func,
+  mouseVisibleFunc: PropTypes.func,
+  mouseCarListFunc: PropTypes.func,
+  mouseContextmenuFunc: PropTypes.func,
   initialLogue: PropTypes.array,
   myWorkState: PropTypes.array,
 };
@@ -514,4 +377,4 @@ const mapDispatchToProps = dispatch => ({
   setWorkLogue: () => dispatch(setWorkLogueAct(value)),
 });
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(MyWork));
+export default injectIntl(MouseCarHoc(connect(mapStateToProps, mapDispatchToProps)(MyWork)));

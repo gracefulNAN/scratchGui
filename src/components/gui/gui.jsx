@@ -172,9 +172,6 @@ const GUIComponent = props => {
                     <LoginModal title="东实科技"/>
                 ): null }
                 {/* 我的作品 */}
-                {/* {showMyWorkModal ? (
-                    <MyWorkModal />
-                ) : null} */}
                 {showMyWorkModal ? (
                     <MyWorkModal />
                 ) : null}

@@ -1,7 +1,7 @@
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import bindAll from 'lodash.bindall';
 import Box from '../box/box.jsx';
 import PlayButton from '../../containers/play-button.jsx';
 import styles from './library-item.css';
@@ -9,9 +9,35 @@ import classNames from 'classnames';
 
 import bluetoothIconURL from './bluetooth.svg';
 import internetConnectionIconURL from './internet-connection.svg';
+// import MouseCarHoc from '../mouse-car/mouseCar.jsx';
 
 /* eslint-disable react/prefer-stateless-function */
 class LibraryItemComponent extends React.PureComponent {
+    constructor (props) {
+      super(props);
+      bindAll(this, [
+        'handleMouseDown',
+        'handleMouseLeave',
+      ]);
+    }
+    componentDidMount(){
+        this.newMouseRight = this.mouseContextmenu();
+    }
+    handleMouseDown(){
+        document.addEventListener("contextmenu",this.newMouseRight)
+    }
+    mouseContextmenu(){
+        return (even, ...ags)=>{
+        this.props.mouseVisibleFunc(true)
+        this.props.mouseCarListFunc(["分享"])
+        this.props.mouseContextmenuFunc(even)
+        }
+    }
+    handleMouseLeave(){
+        // mouse right
+        document.removeEventListener("contextmenu", this.newMouseRight)
+        this.props.mouseVisibleFunc(false)
+    }
     render () {
         return this.props.featured ? (
             <div
@@ -121,26 +147,33 @@ class LibraryItemComponent extends React.PureComponent {
                 onMouseLeave={this.props.showPlayButton ? null : this.props.onMouseLeave}
             >
                 {/* Layers of wrapping is to prevent layout thrashing on animation */}
-                <Box className={styles.libraryItemImageContainerWrapper}>
-                    <Box
-                        className={styles.libraryItemImageContainer}
-                        onMouseEnter={this.props.showPlayButton ? this.props.onMouseEnter : null}
-                        onMouseLeave={this.props.showPlayButton ? this.props.onMouseLeave : null}
-                    >
-                        <img
-                            className={styles.libraryItemImage}
-                            src={this.props.iconURL}
-                        />
+                <div
+                    className={styles.libraryItemWarper}
+                    onMouseDown={()=>{this.handleMouseDown()}}
+                    onMouseLeave={()=>{this.handleMouseLeave()}}
+                >
+                    <Box className={styles.libraryItemImageContainerWrapper}>
+                        <Box
+                            className={styles.libraryItemImageContainer}
+                            onMouseEnter={this.props.showPlayButton ? this.props.onMouseEnter : null}
+                            onMouseLeave={this.props.showPlayButton ? this.props.onMouseLeave : null}
+                        >
+                            <img
+                                className={styles.libraryItemImage}
+                                src={this.props.iconURL}
+                            />
+                        </Box>
                     </Box>
-                </Box>
-                <span className={styles.libraryItemName}>{this.props.name}</span>
-                {this.props.showPlayButton ? (
-                    <PlayButton
-                        isPlaying={this.props.isPlaying}
-                        onPlay={this.props.onPlay}
-                        onStop={this.props.onStop}
-                    />
-                ) : null}
+                    <span className={styles.libraryItemName}>{this.props.name}</span>
+                    {this.props.showPlayButton ? (
+                        <PlayButton
+                            isPlaying={this.props.isPlaying}
+                            onPlay={this.props.onPlay}
+                            onStop={this.props.onStop}
+                        />
+                    ) : null}
+                </div>
+                
             </Box>
         );
     }
@@ -175,6 +208,9 @@ LibraryItemComponent.propTypes = {
     onMouseLeave: PropTypes.func.isRequired,
     onPlay: PropTypes.func.isRequired,
     onStop: PropTypes.func.isRequired,
+    mouseVisibleFunc: PropTypes.func,
+    mouseCarListFunc: PropTypes.func,
+    mouseContextmenuFunc: PropTypes.func,
     showPlayButton: PropTypes.bool
 };
 
@@ -183,4 +219,5 @@ LibraryItemComponent.defaultProps = {
     showPlayButton: false
 };
 
+// export default MouseCarHoc(LibraryItemComponent);
 export default LibraryItemComponent;

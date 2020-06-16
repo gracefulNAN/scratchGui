@@ -10,6 +10,7 @@ import Divider from '../divider/divider.jsx';
 import Filter from '../filter/filter.jsx';
 import TagButton from '../../containers/tag-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
+import MouseCarHoc from '../mouse-car/mouseCar.jsx';
 
 import styles from './library.css';
 
@@ -41,7 +42,8 @@ class LibraryComponent extends React.Component {
             'handlePlayingEnd',
             'handleSelect',
             'handleTagClick',
-            'setFilteredDataRef'
+            'setFilteredDataRef',
+
         ]);
         this.state = {
             playingItem: null,
@@ -93,6 +95,7 @@ class LibraryComponent extends React.Component {
                 playingItem: id
             });
         }
+
     }
     handleMouseLeave (id) {
         if (this.props.onItemMouseLeave) {
@@ -158,6 +161,11 @@ class LibraryComponent extends React.Component {
         this.filteredDataRef = ref;
     }
     render () {
+        const {
+            mouseVisibleFunc,
+            mouseCarListFunc,
+            mouseContextmenuFunc,
+        }=this.props;
         return (
             <Modal
                 fullScreen
@@ -230,6 +238,9 @@ class LibraryComponent extends React.Component {
                             onMouseEnter={this.handleMouseEnter}
                             onMouseLeave={this.handleMouseLeave}
                             onSelect={this.handleSelect}
+                            mouseVisibleFunc={mouseVisibleFunc}
+                            mouseCarListFunc={mouseCarListFunc}
+                            mouseContextmenuFunc={mouseContextmenuFunc}
                         />
                     )) : (
                         <div className={styles.spinnerWrapper}>
@@ -278,4 +289,4 @@ LibraryComponent.defaultProps = {
     showPlayButton: false
 };
 
-export default injectIntl(LibraryComponent);
+export default injectIntl(MouseCarHoc(LibraryComponent));

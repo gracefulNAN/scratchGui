@@ -88,8 +88,9 @@ import scratchLogo from './logo.jpg';
 
 import sharedMessages from '../../lib/shared-messages';
 import LoginButton from './login-button.jsx';
-
+import ConserveOrRelease from './conserve-release.jsx';
 import SB3ToHtmlFunc from '../../lib/htmllifier/html-lifier.js'
+
 
 const ariaMessages = defineMessages({
     language: {
@@ -186,10 +187,16 @@ class MenuBar extends React.Component {
             'handleLanguageMouseUp',
             'handleRestoreOption',
             'getSaveToComputerHandler',
-            'restoreOptionMessage'
+            'restoreOptionMessage',
+            'openConserveClick',
+            'openReleaseClick',
+            'closeConserveClick',
+            'closeReleaseClick',
+            'toHtmlClick',
         ]);
         this.state={
-            blockOrNone: false,
+            openConserve: false,
+            openRelease: false,
         };
     }
     componentDidMount () {
@@ -207,7 +214,8 @@ class MenuBar extends React.Component {
         const readyToReplaceProject = this.props.confirmReadyToReplaceProject(
             this.props.intl.formatMessage(sharedMessages.replaceProjectWarning)
         );
-        this.props.onRequestCloseFile();
+        // this.props.onRequestCloseFile();
+        console.log(readyToReplaceProject)
         if (readyToReplaceProject) {
             this.props.onClickNew(this.props.canSave && this.props.canCreateNew);
         }
@@ -307,15 +315,33 @@ class MenuBar extends React.Component {
         const {showPersonalModal, onPersonal, onClosePersonal} = this.props;
         !showPersonalModal ? onPersonal() : onClosePersonal();
     }
-    SB3PublishClick(){
-        const { blockOrNone } = this.state;
-        this.setState({
-            blockOrNone: !blockOrNone,
-        })
-    }
     toHtmlClick(){
         SB3ToHtmlFunc(this.props.fileState)
     }
+
+    // 打开保存、发布
+    openConserveClick(){
+        this.setState({
+            openConserve: true,
+        })
+    }
+    openReleaseClick(){
+        this.setState({
+            openRelease: true,
+        })
+    }
+    // 关闭保存，发布
+    closeConserveClick(){
+        this.setState({
+            openConserve: false,
+        })
+    }
+    closeReleaseClick(){
+        this.setState({
+            openRelease: false,
+        })
+    }
+
     render () {
         const saveNowMessage = (
             <FormattedMessage
@@ -793,7 +819,7 @@ class MenuBar extends React.Component {
                         <CommunityButton 
                             buttonText="新建" 
                             className={styles.menuBarButton} 
-                            onClick={ ()=> {}}
+                            onClick={this.handleClickNew}
                         />
                     </div>
                     {/* 保存 */}
@@ -801,32 +827,47 @@ class MenuBar extends React.Component {
                         <CommunityButton 
                             buttonText="保存" 
                             className={styles.menuBarButton} 
-                            onClick={ ()=> {}}
+                            onClick={ ()=> {
+                                this.openConserveClick()
+                            }}
                         />
                     </div>
                     {/* 发布 */}
                     <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
-                        <SB3Downloader>{(className, downloadProjectCallback) => (
-                            <CommunityButton 
-                                buttonText="发布" 
-                                className={classNames(styles.menuBarButton, className)} 
-                                onClick={ ()=> {
-                                    this.getSaveToComputerHandler(downloadProjectCallback)()
-                                    this.SB3PublishClick() 
-                                }}
-                            />
-                        )}</SB3Downloader>
-                        
-                        <div style={{display: this.state.blockOrNone ? "block" : "none"}}>
-                            <button
-                                onClick={()=>{ 
-                                    this.toHtmlClick()
-                                }}
-                            > 跳转到HTML </button>
-                        </div>
+                        <CommunityButton 
+                            buttonText="发布" 
+                            className={classNames(styles.menuBarButton)} 
+                            onClick={ ()=> {
+                                this.openReleaseClick()
+                            }}
+                        />
                     </div>
                 </div>
-
+                {/* 保存页 */}
+                {
+                    this.state.openConserve ? (
+                        <ConserveOrRelease
+                            title="保存"
+                            type="conserve"
+                            closeClick={this.closeConserveClick}
+                        />
+                    ):null
+                }
+                {/* 发布页 */}
+                {
+                    this.state.openRelease ? (
+                        <SB3Downloader>{(className, downloadProjectCallback) => (
+                            <ConserveOrRelease
+                                title="发布"
+                                isTextarea={true}
+                                type="release"
+                                closeClick={this.closeReleaseClick}
+                                SBToThmlClick={this.toHtmlClick}
+                                getSBWorkClick={this.getSaveToComputerHandler(downloadProjectCallback)}
+                            />
+                        )}</SB3Downloader>
+                    ):null
+                }
                 {/* show the proper UI in the account menu, given whether the user is
                 logged in, and whether a session is available to log in with */}
                 
